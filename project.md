@@ -14,11 +14,11 @@ The testing data is https://d396qusza40orc.cloudfront.net/predmachlearn/pml-test
  
 ##### data=read.csv('pml-training.csv',na.strings=c('','NA'))
 
-dim(data)
-[1] 19622   160
+>dim(data)
+>[1] 19622   160
 
 remove column with NA value. 
-##### pml_clean_data=data[,!apply(data,2,function(x) any(is.na(x)) )]
+pml_clean_data=data[,!apply(data,2,function(x) any(is.na(x)) )]
 dim(pml_clean_data)
 [1] 19622    60
 remove unwanted column remains only 53 variables
@@ -39,9 +39,9 @@ data_partition=createDataPartition(y=final_pml_data$classe, p=0.6, list=FALSE)
 data_training =final_pml_data[data_partition,]
 data_Testing=final_pml_data[-data_partition, ]
 
->dim(data_training)
+dim(data_training)
 [1] 11776    53
-> dim(data_Testing)
+dim(data_Testing)
 [1] 7846   53
 
 >model=randomForest(classe~., data=data_training, method='class')
@@ -49,16 +49,26 @@ data_Testing=final_pml_data[-data_partition, ]
 >z=confusionMatrix(pred,data_Testing$classe)
 >save(z,file='test.RData')
 
-load('test.RData')
+>load('test.RData')
 
->z$table
+z$table
 
-to display accuracy
+To display accuracy
 z$overall[1]
-1.  Accuracy 
-0.9924802 
-
+>1.  Accuracy 
+>0.9924802 
 Here accuracy of training data is 99.24% hence model build up is good and reliable model
+##### Out of sample Error
+>out of sample error is calculated as    100%  -   Accuracy  =100  -  99.248 = 0.751%
+>missClass = function(values, predicted) {
+  sum(predicted != values) / length(values)
+}
+>OOS_errRate = missClass(data_Testing$classe, pred)
+
+##### OOS_errRate
+>[1] 0.007519755
+
+
 ### Step 3 Testing the data
 
 >test_data=read.csv('pml-testing.csv',na.strings=c('','NA'))
