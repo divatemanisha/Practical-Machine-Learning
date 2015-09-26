@@ -34,7 +34,7 @@ library('caret')
 install.packages('e1071')
 library('e1071')
 
-### Step 2 Develop the Prediction Model
+### Step 2 Develop the Prediction Model with cross validation
 data_partition=createDataPartition(y=final_pml_data$classe, p=0.6, list=FALSE)
 data_training =final_pml_data[data_partition,]
 data_Testing=final_pml_data[-data_partition, ]
