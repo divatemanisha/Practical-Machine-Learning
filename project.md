@@ -44,41 +44,42 @@ dim(data_training)
 dim(data_Testing)
 [1] 7846   53
 
->model=randomForest(classe~., data=data_training, method='class')
->pred=predict(model,data_Testing, type='class')
->z=confusionMatrix(pred,data_Testing$classe)
->save(z,file='test.RData')
+model=randomForest(classe~., data=data_training, method='class')
+pred=predict(model,data_Testing, type='class')
+z=confusionMatrix(pred,data_Testing$classe)
+save(z,file='test.RData')
 
->load('test.RData')
+load('test.RData')
 
 z$table
 
 To display accuracy
 z$overall[1]
->1.  Accuracy 
->0.9924802 
+1.  Accuracy 
+0.9924802 
 Here accuracy of training data is 99.24% hence model build up is good and reliable model
 ##### Out of sample Error
->out of sample error is calculated as    100%  -   Accuracy  =100  -  99.248 = 0.751%
->missClass = function(values, predicted) {
+out of sample error is calculated as    100%  -   Accuracy  =100  -  99.248 = 0.751%
+missClass = function(values, predicted) {
   sum(predicted != values) / length(values)
 }
->OOS_errRate = missClass(data_Testing$classe, pred)
+
+OOS_errRate = missClass(data_Testing$classe, pred)
 
 ##### OOS_errRate
->[1] 0.007519755
+[1] 0.007519755
 
 
 ### Step 3 Testing the data
 
->test_data=read.csv('pml-testing.csv',na.strings=c('','NA'))
->final_test_data=test_data[,!apply(test_data,2,function(x) any(is.na(x)) )]
->test_data_pred=final_test_data[,-c(1:7)]
+test_data=read.csv('pml-testing.csv',na.strings=c('','NA'))
+final_test_data=test_data[,!apply(test_data,2,function(x) any(is.na(x)) )]
+test_data_pred=final_test_data[,-c(1:7)]
 
->predicted=predict(model,test_data,type='class')
->save(predicted,file='predicted.RData')
+predicted=predict(model,test_data,type='class')
+save(predicted,file='predicted.RData')
 
->The final prediction for the 20 ends up as:
+The final prediction for the 20 ends up as:
 > predicted
  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
  B  A  B  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B 
